@@ -136,6 +136,34 @@ export default function VirtualCard({ card }) {
             </span>
           </div>
         </div>
+
+        {card.card_type === "premium" && (
+          <div className="mt-4 pt-4 border-t border-border/30 space-y-2">
+            <p className="text-xs font-semibold text-cyan-400 uppercase tracking-wider">Premium Advantages</p>
+            <ul className="space-y-1 text-xs text-muted-foreground">
+              <li className="flex items-start gap-2">
+                <span className="text-cyan-400 mt-0.5">✓</span>
+                <span>45K Welcome Bonus Profit</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-cyan-400 mt-0.5">✓</span>
+                <span>Up to 5M Daily Trading Limit</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-cyan-400 mt-0.5">✓</span>
+                <span>Advanced Market Access</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-cyan-400 mt-0.5">✓</span>
+                <span>Priority Trade Execution</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-cyan-400 mt-0.5">✓</span>
+                <span>Reduced Trading Fees</span>
+              </li>
+            </ul>
+          </div>
+        )}
       </div>
 
       {copied && (
