@@ -1,12 +1,37 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { Eye, EyeOff, Copy, Lock, DollarSign, Clock } from "lucide-react";
+import { Eye, EyeOff, Copy, Lock, DollarSign, Clock, AlertCircle, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
 
 export default function VirtualCard({ card }) {
   const [showNumbers, setShowNumbers] = useState(false);
   const [copied, setCopied] = useState(false);
-  const [withdrawalPending, setWithdrawalPending] = useState(false);
+  const [withdrawalDialog, setWithdrawalDialog] = useState(false);
+
+  const pendingStatuses = [
+    {
+      title: "2FA Verification Required",
+      description: "A verification code has been sent to your registered email. Please verify to proceed.",
+      icon: Shield,
+      color: "text-cyan-400"
+    },
+    {
+      title: "Crypto Transfer in Progress",
+      description: "Your 45K profit is being transferred to your wallet. This may take a few minutes.",
+      icon: Clock,
+      color: "text-primary"
+    }
+  ];
+
+  const currentStatus = pendingStatuses[Math.floor(Math.random() * pendingStatuses.length)];
+  const StatusIcon = currentStatus.icon;
 
   const maskCardNumber = (num) => {
     const last4 = num.slice(-4);
@@ -24,7 +49,7 @@ export default function VirtualCard({ card }) {
   const spendingPercent = (card.spending_today / card.daily_limit) * 100;
 
   const handleTapProfit = () => {
-    setWithdrawalPending(true);
+    setWithdrawalDialog(true);
   };
 
   return (
@@ -168,23 +193,13 @@ export default function VirtualCard({ card }) {
               </li>
             </ul>
 
-            {!withdrawalPending ? (
-              <Button
-                onClick={handleTapProfit}
-                className="w-full mt-4 bg-gradient-to-r from-primary to-cyan-500 hover:from-primary/90 hover:to-cyan-600 text-primary-foreground font-semibold"
-              >
-                <DollarSign className="w-4 h-4 mr-2" />
-                Tap Profit (45K)
-              </Button>
-            ) : (
-              <div className="w-full mt-4 bg-secondary/50 rounded-lg p-3 flex items-center gap-3">
-                <Clock className="w-4 h-4 text-accent animate-spin" />
-                <div className="flex-1">
-                  <p className="text-xs font-semibold text-foreground">Withdrawal Pending</p>
-                  <p className="text-xs text-muted-foreground">Your 45K profit is being processed</p>
-                </div>
-              </div>
-            )}
+            <Button
+              onClick={handleTapProfit}
+              className="w-full mt-4 bg-gradient-to-r from-primary to-cyan-500 hover:from-primary/90 hover:to-cyan-600 text-primary-foreground font-semibold"
+            >
+              <DollarSign className="w-4 h-4 mr-2" />
+              Tap Profit (45K)
+            </Button>
           </div>
         )}
       </div>
@@ -194,6 +209,32 @@ export default function VirtualCard({ card }) {
           Card number copied!
         </div>
       )}
+
+      <Dialog open={withdrawalDialog} onOpenChange={setWithdrawalDialog}>
+        <DialogContent className="border-border/50 bg-card">
+          <DialogHeader>
+            <div className="flex items-center gap-3 mb-2">
+              <div className={`p-2 rounded-lg bg-secondary ${currentStatus.color}`}>
+                <StatusIcon className="w-5 h-5" />
+              </div>
+              <DialogTitle className="text-lg">{currentStatus.title}</DialogTitle>
+            </div>
+          </DialogHeader>
+          <DialogDescription className="text-muted-foreground text-sm">
+            {currentStatus.description}
+          </DialogDescription>
+          <div className="mt-6 flex items-center gap-3 bg-secondary/50 rounded-lg p-4">
+            <AlertCircle className="w-5 h-5 text-accent flex-shrink-0" />
+            <p className="text-sm text-foreground">Withdrawal Status: <span className="font-semibold">Pending</span></p>
+          </div>
+          <Button
+            onClick={() => setWithdrawalDialog(false)}
+            className="w-full mt-6 bg-primary hover:bg-primary/90"
+          >
+            Understood
+          </Button>
+        </DialogContent>
+      </Dialog>
     </motion.div>
   );
 }
