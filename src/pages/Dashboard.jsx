@@ -49,6 +49,10 @@ export default function Dashboard() {
             <RecentTrades />
           </div>
         </div>
+
+        <AlertManager alerts={alerts} onAlertsUpdate={refetchAlerts} />
+
+        <NotificationCenter alerts={alerts} cryptoPrices={cryptoPrices} />
       </div>
     </div>
   );
