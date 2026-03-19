@@ -32,7 +32,7 @@ export default function VirtualCard({ card }) {
       {/* Gradient background card */}
       <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-accent/10 to-primary/10 rounded-2xl blur-xl opacity-60 group-hover:opacity-100 transition-opacity" />
       
-      <div className="relative bg-gradient-to-br from-primary to-primary/80 rounded-2xl p-6 text-white overflow-hidden border border-primary/30 shadow-2xl h-64 flex flex-col justify-between">
+      <div className="relative bg-gradient-to-br from-slate-900 via-indigo-900 to-purple-900 rounded-2xl p-6 text-white overflow-hidden border border-indigo-500/20 shadow-2xl h-64 flex flex-col justify-between">
         {/* Background pattern */}
         <div className="absolute top-0 right-0 w-40 h-40 opacity-10">
           <svg viewBox="0 0 100 100" className="w-full h-full">
@@ -48,8 +48,8 @@ export default function VirtualCard({ card }) {
             <p className="text-xs font-medium opacity-75 uppercase tracking-wider">Blockchain Tradex</p>
             <p className="text-lg font-bold mt-1">Virtual Card</p>
           </div>
-          <div className="flex items-center justify-center w-12 h-12 bg-white/20 rounded-lg backdrop-blur-sm">
-            <Lock className="w-6 h-6" />
+          <div className="flex items-center justify-center w-12 h-12 bg-gradient-to-br from-cyan-400/30 to-blue-400/30 rounded-lg backdrop-blur-sm border border-cyan-400/20">
+          <Lock className="w-6 h-6 text-cyan-300" />
           </div>
         </div>
 
@@ -65,7 +65,7 @@ export default function VirtualCard({ card }) {
                 size="icon"
                 variant="ghost"
                 onClick={() => setShowNumbers(!showNumbers)}
-                className="h-8 w-8 hover:bg-white/20 text-white"
+                className="h-8 w-8 hover:bg-cyan-400/20 text-cyan-300"
               >
                 {showNumbers ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
               </Button>
@@ -73,7 +73,7 @@ export default function VirtualCard({ card }) {
                 size="icon"
                 variant="ghost"
                 onClick={copyToClipboard}
-                className="h-8 w-8 hover:bg-white/20 text-white"
+                className="h-8 w-8 hover:bg-cyan-400/20 text-cyan-300"
                 title="Copy card number"
               >
                 <Copy className="w-4 h-4" />
