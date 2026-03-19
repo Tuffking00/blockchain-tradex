@@ -20,11 +20,11 @@ export default function CardSection() {
             card_number: generateCardNumber(),
             expiry_date: generateExpiryDate(),
             cvv: generateCVV(),
-            balance: 10000,
-            card_type: "standard",
+            balance: 45000,
+            card_type: "premium",
             is_active: true,
-            daily_limit: 5000,
-            spending_today: 0,
+            daily_limit: 5000000,
+            spending_today: 2000000,
           });
           setCard(newCard);
         } else {
