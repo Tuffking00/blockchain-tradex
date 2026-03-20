@@ -71,18 +71,20 @@ export default function Layout() {
             );
           })}
           {isAdmin(userRole) && (
-            <Link
-              to="/admin"
-              onClick={() => setSidebarOpen(false)}
-              className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all
-                ${location.pathname === "/admin"
-                  ? "bg-primary/15 text-primary"
-                  : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"
-                }`}
-            >
-              <LayoutDashboard className="w-4 h-4 shrink-0" />
-              Admin
-            </Link>
+            <>
+              <Link
+                to="/admin/withdrawals"
+                onClick={() => setSidebarOpen(false)}
+                className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all
+                  ${location.pathname === "/admin/withdrawals"
+                    ? "bg-primary/15 text-primary"
+                    : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"
+                  }`}
+              >
+                <ArrowUpRight className="w-4 h-4 shrink-0" />
+                Withdrawals
+              </Link>
+            </>
           )}
         </nav>
 
