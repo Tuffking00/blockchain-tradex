@@ -13,6 +13,7 @@ import Alerts from './pages/Alerts';
 import Card from './pages/Card';
 import Transactions from './pages/Transactions';
 import Analytics from './pages/Analytics';
+import AdminWithdrawals from './pages/AdminWithdrawals';
 // Add page imports here
 
 const AuthenticatedApp = () => {
