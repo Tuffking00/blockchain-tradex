@@ -28,6 +28,50 @@ const METHOD_LABELS = {
 export default function VirtualCard({ card }) {
   const [showNumbers, setShowNumbers] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [withdrawDialog, setWithdrawDialog] = useState(false);
+  const [withdrawMethod, setWithdrawMethod] = useState("");
+  const [withdrawAmount, setWithdrawAmount] = useState("");
+  const [processingSteps, setProcessingSteps] = useState([]);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [processingDone, setProcessingDone] = useState(false);
+
+  const runBrokerSequence = () => {
+    if (!withdrawMethod || !withdrawAmount) {
+      toast.error("Please select a method and enter an amount");
+      return;
+    }
+    setIsProcessing(true);
+    setProcessingDone(false);
+    setProcessingSteps([]);
+    BROKER_STEPS.forEach((step, i) => {
+      setTimeout(() => {
+        setProcessingSteps((prev) => [...prev, i]);
+        if (i === BROKER_STEPS.length - 1) {
+          base44.entities.Transaction.create({
+            type: "withdrawal",
+            amount: parseFloat(withdrawAmount),
+            total_value: parseFloat(withdrawAmount),
+            status: "pending",
+            transaction_date: new Date().toISOString(),
+            notes: `Withdrawal via ${METHOD_LABELS[withdrawMethod] || withdrawMethod}`,
+          });
+          setIsProcessing(false);
+          setProcessingDone(true);
+        }
+      }, step.delay);
+    });
+  };
+
+  const handleCloseWithdraw = () => {
+    if (isProcessing) return;
+    setWithdrawDialog(false);
+    setWithdrawMethod("");
+    setWithdrawAmount("");
+    setProcessingSteps([]);
+    setProcessingDone(false);
+  };
+
+  const showForm = processingSteps.length === 0 && !isProcessing && !processingDone;
 
   const maskCardNumber = (num) => {
     const last4 = num.slice(-4);
