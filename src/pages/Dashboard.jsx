@@ -3,6 +3,7 @@ import PortfolioStats from "@/components/crypto/PortfolioStats";
 import PriceChart from "@/components/crypto/PriceChart";
 import RecentTrades from "@/components/crypto/RecentTrades";
 import ActivityNotifications from "@/components/dashboard/ActivityNotifications";
+import ExportReportButton from "@/components/dashboard/ExportReportButton";
 import { useLivePrices } from "@/hooks/useLivePrices";
 
 export default function Dashboard() {
@@ -10,7 +11,10 @@ export default function Dashboard() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold">Dashboard</h1>
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold">Dashboard</h1>
+        <ExportReportButton cryptoList={cryptoList} portfolioTotal={portfolioTotal} />
+      </div>
 
       <PortfolioStats
         portfolioTotal={portfolioTotal}
