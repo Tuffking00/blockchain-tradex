@@ -221,6 +221,15 @@ export default function VirtualCard({ card }) {
           </div>
         </div>
 
+        <Button
+          onClick={() => setWithdrawDialog(true)}
+          variant="outline"
+          className="w-full border-primary/40 text-primary hover:bg-primary/10"
+        >
+          <Send className="w-4 h-4 mr-2" />
+          Withdraw Funds
+        </Button>
+
         {card.card_type === "premium" && (
           <div className="mt-4 pt-4 border-t border-border/30 space-y-2">
             <p className="text-xs font-semibold text-cyan-400 uppercase tracking-wider">Premium Advantages</p>
