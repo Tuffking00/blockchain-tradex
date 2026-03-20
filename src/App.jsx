@@ -5,7 +5,12 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
+import Layout from './components/Layout';
 import Dashboard from './pages/Dashboard';
+import Trade from './pages/Trade';
+import Markets from './pages/Markets';
+import Alerts from './pages/Alerts';
+import Card from './pages/Card';
 import Transactions from './pages/Transactions';
 import Analytics from './pages/Analytics';
 // Add page imports here
