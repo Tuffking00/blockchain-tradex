@@ -4,6 +4,8 @@ import { LayoutDashboard, BarChart3, ArrowUpDown, Bell, CreditCard, History, Arr
 import { Button } from "@/components/ui/button";
 import WithdrawalSidebar from "@/components/crypto/WithdrawalSidebar";
 import { useLivePrices } from "@/hooks/useLivePrices";
+import { useAuth } from "@/lib/AuthContext";
+import { isAdmin } from "@/lib/permissions";
 
 const NAV_ITEMS = [
   { label: "Dashboard",    icon: LayoutDashboard, path: "/" },
