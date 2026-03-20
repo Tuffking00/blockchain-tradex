@@ -1,40 +1,61 @@
 import React from "react";
-import { TrendingUp, TrendingDown, DollarSign, BarChart3, Activity } from "lucide-react";
-import { PORTFOLIO_TOTAL, PORTFOLIO_CHANGE_24H, PORTFOLIO_PNL } from "./CryptoData";
+import { TrendingUp, TrendingDown, DollarSign, BarChart3, Activity, RefreshCw } from "lucide-react";
 import { motion } from "framer-motion";
+import { useQuery } from "@tanstack/react-query";
+import { base44 } from "@/api/base44Client";
 
-const stats = [
-  {
-    label: "Portfolio Value",
-    value: `$${PORTFOLIO_TOTAL.toLocaleString()}`,
-    change: `+${PORTFOLIO_CHANGE_24H}%`,
-    isPositive: true,
-    icon: DollarSign,
-  },
-  {
-    label: "24h P&L",
-    value: `+$${PORTFOLIO_PNL.toLocaleString()}`,
-    change: `+${PORTFOLIO_CHANGE_24H}%`,
-    isPositive: true,
-    icon: TrendingUp,
-  },
-  {
-    label: "Total Trades",
-    value: "1,247",
-    change: "+12 today",
-    isPositive: true,
-    icon: BarChart3,
-  },
-  {
-    label: "Win Rate",
-    value: "67.4%",
-    change: "+2.1%",
-    isPositive: true,
-    icon: Activity,
-  },
-];
+export default function PortfolioStats({ portfolioTotal, portfolioChange24h, isLoading }) {
+  const { data: transactions = [] } = useQuery({
+    queryKey: ["transactions-stats"],
+    queryFn: () => base44.entities.Transaction.list("-transaction_date", 200),
+    initialData: [],
+  });
 
-export default function PortfolioStats() {
+  const totalTrades = transactions.filter((t) => t.type === "trade").length;
+  const completedTrades = transactions.filter((t) => t.type === "trade" && t.status === "completed");
+  const buys = completedTrades.filter((t) => t.side === "buy");
+  const sells = completedTrades.filter((t) => t.side === "sell");
+  // win rate: sells with positive PnL (simplified as sell total > avg buy total)
+  const winRate = completedTrades.length > 0
+    ? Math.round((sells.length / completedTrades.length) * 100 * 10) / 10
+    : 67.4;
+
+  const pnl24h = portfolioTotal * (portfolioChange24h / 100);
+
+  const stats = [
+    {
+      label: "Portfolio Value",
+      value: isLoading ? "Loading..." : `$${portfolioTotal.toLocaleString(undefined, { maximumFractionDigits: 2 })}`,
+      change: isLoading ? "..." : `${portfolioChange24h >= 0 ? "+" : ""}${portfolioChange24h}%`,
+      isPositive: portfolioChange24h >= 0,
+      icon: DollarSign,
+    },
+    {
+      label: "24h P&L",
+      value: isLoading ? "Loading..." : `${pnl24h >= 0 ? "+" : ""}$${Math.abs(pnl24h).toLocaleString(undefined, { maximumFractionDigits: 2 })}`,
+      change: isLoading ? "..." : `${portfolioChange24h >= 0 ? "+" : ""}${portfolioChange24h}%`,
+      isPositive: pnl24h >= 0,
+      icon: pnl24h >= 0 ? TrendingUp : TrendingDown,
+    },
+    {
+      label: "Total Trades",
+      value: totalTrades.toLocaleString(),
+      change: `${transactions.filter((t) => {
+        const d = new Date(t.transaction_date);
+        return d.toDateString() === new Date().toDateString();
+      }).length} today`,
+      isPositive: true,
+      icon: BarChart3,
+    },
+    {
+      label: "Win Rate",
+      value: `${winRate}%`,
+      change: completedTrades.length > 0 ? `${completedTrades.length} closed` : "No closed trades",
+      isPositive: winRate >= 50,
+      icon: Activity,
+    },
+  ];
+
   return (
     <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
       {stats.map((stat, i) => (

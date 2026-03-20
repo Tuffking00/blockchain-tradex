@@ -1,9 +1,8 @@
 import React from "react";
-import { TrendingUp, TrendingDown } from "lucide-react";
-import { CRYPTO_LIST } from "./CryptoData";
+import { TrendingUp, TrendingDown, Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
 
-export default function MarketTable() {
+export default function MarketTable({ cryptoList, isLoading }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -11,8 +10,9 @@ export default function MarketTable() {
       transition={{ delay: 0.3 }}
       className="bg-card rounded-xl border border-border/50 overflow-hidden"
     >
-      <div className="p-5 border-b border-border/50">
-        <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Markets</h3>
+      <div className="p-5 border-b border-border/50 flex items-center justify-between">
+        <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Live Markets</h3>
+        {isLoading && <Loader2 className="w-4 h-4 animate-spin text-primary" />}
       </div>
       <div className="overflow-x-auto">
         <table className="w-full">
@@ -27,7 +27,7 @@ export default function MarketTable() {
             </tr>
           </thead>
           <tbody>
-            {CRYPTO_LIST.map((coin, i) => {
+            {cryptoList.map((coin) => {
               const holdingsValue = coin.holdings * coin.price;
               return (
                 <tr
@@ -46,7 +46,7 @@ export default function MarketTable() {
                     </div>
                   </td>
                   <td className="text-right px-5 py-4">
-                    <span className="font-semibold text-sm">
+                    <span className="font-semibold text-sm tabular-nums">
                       ${coin.price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                     </span>
                   </td>
@@ -56,18 +56,14 @@ export default function MarketTable() {
                         ? "bg-primary/10 text-primary"
                         : "bg-destructive/10 text-destructive"
                     }`}>
-                      {coin.change24h >= 0 ? (
-                        <TrendingUp className="w-3 h-3" />
-                      ) : (
-                        <TrendingDown className="w-3 h-3" />
-                      )}
+                      {coin.change24h >= 0 ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
                       {coin.change24h >= 0 ? "+" : ""}{coin.change24h}%
                     </div>
                   </td>
                   <td className="text-right px-5 py-4 text-sm text-muted-foreground hidden md:table-cell">${coin.volume}</td>
                   <td className="text-right px-5 py-4 text-sm text-muted-foreground hidden lg:table-cell">${coin.marketCap}</td>
                   <td className="text-right px-5 py-4">
-                    <p className="font-semibold text-sm">${holdingsValue.toLocaleString(undefined, { maximumFractionDigits: 2 })}</p>
+                    <p className="font-semibold text-sm tabular-nums">${holdingsValue.toLocaleString(undefined, { maximumFractionDigits: 2 })}</p>
                     <p className="text-xs text-muted-foreground">{coin.holdings} {coin.symbol}</p>
                   </td>
                 </tr>

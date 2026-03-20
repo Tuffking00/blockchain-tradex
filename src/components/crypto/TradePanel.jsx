@@ -2,17 +2,54 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { CRYPTO_LIST } from "./CryptoData";
 import { motion } from "framer-motion";
-import { ArrowUpDown } from "lucide-react";
+import { ArrowUpDown, CheckCircle2, Loader2 } from "lucide-react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { base44 } from "@/api/base44Client";
+import { toast } from "sonner";
 
-export default function TradePanel() {
+export default function TradePanel({ cryptoList = [] }) {
   const [side, setSide] = useState("buy");
   const [amount, setAmount] = useState("");
   const [selectedCoin, setSelectedCoin] = useState("BTC");
+  const queryClient = useQueryClient();
 
-  const coin = CRYPTO_LIST.find((c) => c.symbol === selectedCoin);
+  const coin = cryptoList.find((c) => c.symbol === selectedCoin);
   const total = amount && coin ? (parseFloat(amount) * coin.price).toFixed(2) : "0.00";
+  const fee = (parseFloat(total) * 0.001 || 0).toFixed(2);
+
+  const tradeMutation = useMutation({
+    mutationFn: async () => {
+      await base44.entities.Transaction.create({
+        type: "trade",
+        crypto_symbol: selectedCoin,
+        side,
+        amount: parseFloat(amount),
+        price: coin.price,
+        total_value: parseFloat(total),
+        status: "completed",
+        transaction_date: new Date().toISOString(),
+        notes: `${side.toUpperCase()} ${amount} ${selectedCoin} @ $${coin.price.toLocaleString()}`,
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["transactions"] });
+      queryClient.invalidateQueries({ queryKey: ["transactions-stats"] });
+      toast.success(`${side === "buy" ? "Bought" : "Sold"} ${amount} ${selectedCoin} successfully!`);
+      setAmount("");
+    },
+    onError: () => {
+      toast.error("Trade failed. Please try again.");
+    },
+  });
+
+  const handleTrade = () => {
+    if (!amount || parseFloat(amount) <= 0) {
+      toast.error("Please enter a valid amount");
+      return;
+    }
+    tradeMutation.mutate();
+  };
 
   return (
     <motion.div
@@ -54,7 +91,7 @@ export default function TradePanel() {
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              {CRYPTO_LIST.map((c) => (
+              {cryptoList.map((c) => (
                 <SelectItem key={c.symbol} value={c.symbol}>
                   <span className="flex items-center gap-2">
                     <span>{c.icon}</span>
@@ -86,31 +123,42 @@ export default function TradePanel() {
 
         <div>
           <label className="text-xs text-muted-foreground mb-1.5 block">Total (USDT)</label>
-          <div className="bg-secondary/50 border border-border/50 rounded-lg px-3 py-2.5 text-sm font-semibold">
-            ${parseFloat(total).toLocaleString()}
+          <div className="bg-secondary/50 border border-border/50 rounded-lg px-3 py-2.5 text-sm font-semibold tabular-nums">
+            ${parseFloat(total).toLocaleString(undefined, { minimumFractionDigits: 2 })}
           </div>
         </div>
 
         {coin && (
           <div className="bg-secondary/30 rounded-lg p-3 space-y-2">
             <div className="flex justify-between text-xs">
-              <span className="text-muted-foreground">Price</span>
-              <span className="font-medium">${coin.price.toLocaleString()}</span>
+              <span className="text-muted-foreground">Live Price</span>
+              <span className="font-medium tabular-nums">${coin.price.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
+            </div>
+            <div className="flex justify-between text-xs">
+              <span className="text-muted-foreground">24h Change</span>
+              <span className={`font-medium ${coin.change24h >= 0 ? "text-primary" : "text-destructive"}`}>
+                {coin.change24h >= 0 ? "+" : ""}{coin.change24h}%
+              </span>
             </div>
             <div className="flex justify-between text-xs">
               <span className="text-muted-foreground">Fee (0.1%)</span>
-              <span className="font-medium">${(parseFloat(total) * 0.001 || 0).toFixed(2)}</span>
+              <span className="font-medium">${fee}</span>
             </div>
           </div>
         )}
 
         <Button
+          onClick={handleTrade}
+          disabled={tradeMutation.isPending || !amount || cryptoList.length === 0}
           className={`w-full font-semibold ${
             side === "buy"
               ? "bg-primary hover:bg-primary/90 text-primary-foreground"
               : "bg-destructive hover:bg-destructive/90 text-destructive-foreground"
           }`}
         >
+          {tradeMutation.isPending ? (
+            <Loader2 className="w-4 h-4 animate-spin mr-2" />
+          ) : null}
           {side === "buy" ? "Buy" : "Sell"} {selectedCoin}
         </Button>
       </div>
