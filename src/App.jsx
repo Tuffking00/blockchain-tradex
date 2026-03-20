@@ -7,6 +7,7 @@ import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 import Dashboard from './pages/Dashboard';
 import Transactions from './pages/Transactions';
+import Analytics from './pages/Analytics';
 // Add page imports here
 
 const AuthenticatedApp = () => {
