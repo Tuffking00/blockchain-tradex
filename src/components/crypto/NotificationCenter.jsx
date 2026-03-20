@@ -93,7 +93,7 @@ export default function NotificationCenter({ alerts, cryptoPrices, cryptoChanges
     switch (type) {
       case "price_above": return <TrendingUp className="w-4 h-4 text-primary" />;
       case "price_below": return <TrendingDown className="w-4 h-4 text-destructive" />;
-      case "volatility":  return <Zap className="w-4 h-4 text-yellow-400" />;
+      case "volatility":  return <Zap className="w-4 h-4 text-chart-3" />;
       default:            return <AlertCircle className="w-4 h-4 text-muted-foreground" />;
     }
   };
@@ -102,7 +102,7 @@ export default function NotificationCenter({ alerts, cryptoPrices, cryptoChanges
     switch (type) {
       case "price_above": return "border-primary/40 bg-primary/5";
       case "price_below": return "border-destructive/40 bg-destructive/5";
-      case "volatility":  return "border-yellow-400/40 bg-yellow-400/5";
+      case "volatility":  return "border-chart-3/40 bg-chart-3/5";
       default:            return "border-border/50 bg-card";
     }
   };

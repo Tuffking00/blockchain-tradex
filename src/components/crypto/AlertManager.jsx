@@ -11,7 +11,7 @@ const CRYPTO_SYMBOLS = ["BTC", "ETH", "SOL", "BNB", "XRP", "ADA", "DOGE", "AVAX"
 const ALERT_TYPE_META = {
   price_above: { label: "Price Above",    icon: TrendingUp,   hint: "USD price target",       color: "text-primary" },
   price_below: { label: "Price Below",    icon: TrendingDown, hint: "USD price target",       color: "text-destructive" },
-  volatility:  { label: "High Volatility",icon: Zap,          hint: "24h change % threshold", color: "text-yellow-400" },
+  volatility:  { label: "High Volatility",icon: Zap,          hint: "24h change % threshold", color: "text-chart-3" },
 };
 
 export default function AlertManager({ alerts, onAlertsUpdate, cryptoPrices, cryptoChanges }) {
@@ -173,7 +173,7 @@ export default function AlertManager({ alerts, onAlertsUpdate, cryptoPrices, cry
             </span>
           )}
           {triggeredAlerts.length > 0 && (
-            <span className="w-5 h-5 rounded-full bg-yellow-400/20 text-yellow-400 text-[10px] font-bold flex items-center justify-center animate-pulse">
+            <span className="w-5 h-5 rounded-full bg-chart-3/20 text-chart-3 text-[10px] font-bold flex items-center justify-center animate-pulse">
               {triggeredAlerts.length}
             </span>
           )}
@@ -254,7 +254,7 @@ export default function AlertManager({ alerts, onAlertsUpdate, cryptoPrices, cry
             )}
             {triggeredAlerts.length > 0 && (
               <div className="space-y-1.5">
-                <p className="text-[10px] font-semibold text-yellow-400/80 uppercase tracking-wider pt-1 pb-0.5 px-1">✓ Triggered</p>
+                <p className="text-[10px] font-semibold text-chart-3/80 uppercase tracking-wider pt-1 pb-0.5 px-1">✓ Triggered</p>
                 {triggeredAlerts.map((a) => <AlertRow key={a.id} alert={a} />)}
               </div>
             )}
