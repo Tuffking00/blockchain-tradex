@@ -1,6 +1,7 @@
 import React from "react";
 import TradePanel from "@/components/crypto/TradePanel";
 import RecentTrades from "@/components/crypto/RecentTrades";
+import PortfolioRebalancer from "@/components/crypto/PortfolioRebalancer";
 import { useLivePrices } from "@/hooks/useLivePrices";
 
 export default function Trade() {
@@ -13,6 +14,7 @@ export default function Trade() {
         <TradePanel cryptoList={cryptoList} />
         <RecentTrades />
       </div>
+      <PortfolioRebalancer cryptoList={cryptoList} />
     </div>
   );
 }
