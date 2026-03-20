@@ -1,9 +1,9 @@
 import React from "react";
-import { Bell, Search, Settings, Wallet, RefreshCw } from "lucide-react";
+import { Bell, Search, Wallet, RefreshCw, ArrowUpRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 
-export default function TopBar({ portfolioTotal, isLoading, lastUpdated, onRefresh }) {
+export default function TopBar({ portfolioTotal, isLoading, lastUpdated, onRefresh, onWithdraw }) {
   return (
     <div className="flex items-center justify-between px-6 py-4 border-b border-border/50">
       <div className="flex items-center gap-3">
@@ -43,6 +43,14 @@ export default function TopBar({ portfolioTotal, isLoading, lastUpdated, onRefre
             {isLoading ? "..." : `$${portfolioTotal?.toLocaleString(undefined, { maximumFractionDigits: 2 })}`}
           </span>
         </div>
+        <Button
+          onClick={onWithdraw}
+          variant="outline"
+          className="hidden sm:flex border-primary/40 text-primary hover:bg-primary/10 gap-2"
+        >
+          <ArrowUpRight className="w-4 h-4" />
+          Withdraw
+        </Button>
         <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground" onClick={onRefresh} title="Refresh prices">
           <RefreshCw className="w-4 h-4" />
         </Button>
