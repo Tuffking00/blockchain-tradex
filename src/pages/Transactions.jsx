@@ -120,6 +120,30 @@ export default function Transactions() {
       : <ArrowUpRight className="w-5 h-5 text-primary" />;
   };
 
+  const editMutation = useMutation({
+    mutationFn: ({ id, amount }) =>
+      base44.entities.Transaction.update(id, { amount: parseFloat(amount) }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["transactions"] });
+      queryClient.invalidateQueries({ queryKey: ["transactions-stats"] });
+      toast.success("Amount updated");
+      setEditingId(null);
+    },
+  });
+
+  const startEdit = (tx) => {
+    setEditingId(tx.id);
+    setEditAmount(String(tx.amount ?? ""));
+  };
+
+  const saveEdit = (id) => {
+    if (!editAmount || isNaN(parseFloat(editAmount))) {
+      toast.error("Enter a valid amount");
+      return;
+    }
+    editMutation.mutate({ id, amount: editAmount });
+  };
+
   const showForm = processingSteps.length === 0 && !isProcessing && !processingDone;
 
   return (
