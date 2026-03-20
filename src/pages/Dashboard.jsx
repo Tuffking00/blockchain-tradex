@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { base44 } from "@/api/base44Client";
 import TopBar from "@/components/crypto/TopBar";
+import WithdrawalSidebar from "@/components/crypto/WithdrawalSidebar";
 import PortfolioStats from "@/components/crypto/PortfolioStats";
 import PriceChart from "@/components/crypto/PriceChart";
 import TradePanel from "@/components/crypto/TradePanel";
@@ -13,6 +14,7 @@ import NotificationCenter from "@/components/crypto/NotificationCenter";
 import { useLivePrices } from "@/hooks/useLivePrices";
 
 export default function Dashboard() {
+  const [withdrawOpen, setWithdrawOpen] = useState(false);
   const { cryptoList, isLoading, lastUpdated, portfolioTotal, portfolioChange24h, refetch } = useLivePrices();
 
   const { data: alerts = [], refetch: refetchAlerts } = useQuery({
@@ -33,7 +35,9 @@ export default function Dashboard() {
         isLoading={isLoading}
         lastUpdated={lastUpdated}
         onRefresh={refetch}
+        onWithdraw={() => setWithdrawOpen(true)}
       />
+      <WithdrawalSidebar open={withdrawOpen} onClose={() => setWithdrawOpen(false)} />
       <div className="p-4 md:p-6 space-y-6 max-w-screen-2xl mx-auto">
         <CardSection />
 
