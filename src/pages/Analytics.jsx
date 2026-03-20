@@ -62,7 +62,7 @@ export default function Analytics() {
   });
 
   // Monthly breakdown: withdrawals vs trades
-  const monthlyData = React.useMemo(() => {
+  const monthlyData = useMemo(() => {
     const byMonth = groupBy(transactions, (tx) =>
       format(startOfMonth(parseISO(tx.transaction_date)), "MMM yyyy")
     );
@@ -77,7 +77,7 @@ export default function Analytics() {
   }, [transactions]);
 
   // Pie chart: withdrawal method distribution
-  const pieData = React.useMemo(() => {
+  const pieData = useMemo(() => {
     const withdrawals = transactions.filter((t) => t.type === "withdrawal");
     const methodGroups = groupBy(withdrawals, (tx) => {
       const notes = tx.notes || "";
@@ -97,7 +97,7 @@ export default function Analytics() {
   }, [transactions]);
 
   // Cumulative withdrawal area chart
-  const cumulativeData = React.useMemo(() => {
+  const cumulativeData = useMemo(() => {
     let running = 0;
     return transactions
       .filter((t) => t.type === "withdrawal")
