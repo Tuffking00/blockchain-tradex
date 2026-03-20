@@ -7,7 +7,10 @@ import { base44 } from "@/api/base44Client";
 export default function PortfolioStats({ portfolioTotal, portfolioChange24h, isLoading }) {
   const { data: transactions = [] } = useQuery({
     queryKey: ["transactions-stats"],
-    queryFn: () => base44.entities.Transaction.list("-transaction_date", 200),
+    queryFn: async () => {
+      const user = await base44.auth.me();
+      return base44.entities.Transaction.filter({ created_by: user.email }, "-transaction_date", 200);
+    },
     initialData: [],
   });
 

@@ -7,7 +7,10 @@ import { ArrowDownLeft, ArrowUpRight, Loader2 } from "lucide-react";
 export default function RecentTrades() {
   const { data: transactions = [], isLoading } = useQuery({
     queryKey: ["transactions"],
-    queryFn: () => base44.entities.Transaction.filter({ type: "trade" }, "-transaction_date", 10),
+    queryFn: async () => {
+      const user = await base44.auth.me();
+      return base44.entities.Transaction.filter({ type: "trade", created_by: user.email }, "-transaction_date", 10);
+    },
     initialData: [],
   });
 
