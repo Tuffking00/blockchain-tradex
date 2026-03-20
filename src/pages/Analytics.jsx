@@ -57,7 +57,10 @@ const PieTooltip = ({ active, payload }) => {
 export default function Analytics() {
   const { data: transactions = [], isLoading } = useQuery({
     queryKey: ["transactions-analytics"],
-    queryFn: () => base44.entities.Transaction.list("-transaction_date", 200),
+    queryFn: async () => {
+      const user = await base44.auth.me();
+      return base44.entities.Transaction.filter({ created_by: user.email }, "-transaction_date", 200);
+    },
     initialData: [],
   });
 
