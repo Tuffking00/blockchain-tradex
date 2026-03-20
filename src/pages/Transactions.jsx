@@ -192,16 +192,44 @@ export default function Transactions() {
                       </p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-4">
-                    <div className="text-right">
-                      <p className="font-semibold text-foreground">
-                        {tx.side === "sell" || tx.type === "withdrawal" ? "-" : "+"}
-                        {tx.amount} {tx.crypto_symbol || "USD"}
-                      </p>
-                      <p className="text-xs text-muted-foreground">
-                        ${(tx.total_value ?? tx.amount * tx.price)?.toLocaleString()}
-                      </p>
-                    </div>
+                  <div className="flex items-center gap-3">
+                    {editingId === tx.id ? (
+                      <div className="flex items-center gap-2">
+                        <Input
+                          type="number"
+                          value={editAmount}
+                          onChange={(e) => setEditAmount(e.target.value)}
+                          className="w-28 h-8 text-sm bg-secondary/50 border-border"
+                          autoFocus
+                        />
+                        <Button
+                          size="icon"
+                          className="h-8 w-8 bg-primary hover:bg-primary/90"
+                          onClick={() => saveEdit(tx.id)}
+                          disabled={editMutation.isPending}
+                        >
+                          {editMutation.isPending ? <Loader2 className="w-3 h-3 animate-spin" /> : <Save className="w-3 h-3" />}
+                        </Button>
+                        <Button size="icon" variant="ghost" className="h-8 w-8" onClick={() => setEditingId(null)}>
+                          <X className="w-3 h-3" />
+                        </Button>
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-2">
+                        <div className="text-right">
+                          <p className="font-semibold text-foreground">
+                            {tx.side === "sell" || tx.type === "withdrawal" ? "-" : "+"}
+                            {tx.amount} {tx.crypto_symbol || "USD"}
+                          </p>
+                          <p className="text-xs text-muted-foreground">
+                            ${(tx.total_value ?? tx.amount * tx.price)?.toLocaleString()}
+                          </p>
+                        </div>
+                        <Button size="icon" variant="ghost" className="h-7 w-7 text-muted-foreground hover:text-foreground" onClick={() => startEdit(tx)}>
+                          <Pencil className="w-3.5 h-3.5" />
+                        </Button>
+                      </div>
+                    )}
                     <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg ${getStatusColor(tx.status)}`}>
                       {getStatusIcon(tx.status)}
                       <span className="text-xs font-medium capitalize">{tx.status}</span>
