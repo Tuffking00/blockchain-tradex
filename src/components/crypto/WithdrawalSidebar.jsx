@@ -246,13 +246,13 @@ export default function WithdrawalSidebar({ open, onClose }) {
                     </div>
 
                     {processingDone && (
-                      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
-                        className="bg-primary/10 border border-primary/30 rounded-xl p-4 text-center">
-                        <CheckCircle2 className="w-8 h-8 text-primary mx-auto mb-2" />
-                        <p className="font-semibold text-foreground">Withdrawal Submitted!</p>
-                        <p className="text-xs text-muted-foreground mt-1">Your request is being processed.</p>
-                      </motion.div>
-                    )}
+                       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+                         className="bg-primary/10 border border-primary/30 rounded-xl p-4 text-center">
+                         <CheckCircle2 className="w-8 h-8 text-primary mx-auto mb-2" />
+                         <p className="font-semibold text-foreground">Withdrawal Submitted!</p>
+                         <p className="text-xs text-muted-foreground mt-1">Your request is awaiting admin review.</p>
+                       </motion.div>
+                     )}
                   </motion.div>
                 )}
               </AnimatePresence>
