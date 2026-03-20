@@ -1,5 +1,5 @@
 import React from "react";
-import { TrendingUp, TrendingDown, DollarSign, BarChart3, Activity, RefreshCw } from "lucide-react";
+import { TrendingUp, TrendingDown, DollarSign, BarChart3, Activity, ArrowUpRight } from "lucide-react";
 import { motion } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import { base44 } from "@/api/base44Client";
@@ -13,12 +13,14 @@ export default function PortfolioStats({ portfolioTotal, portfolioChange24h, isL
 
   const totalTrades = transactions.filter((t) => t.type === "trade").length;
   const completedTrades = transactions.filter((t) => t.type === "trade" && t.status === "completed");
-  const buys = completedTrades.filter((t) => t.side === "buy");
   const sells = completedTrades.filter((t) => t.side === "sell");
-  // win rate: sells with positive PnL (simplified as sell total > avg buy total)
   const winRate = completedTrades.length > 0
     ? Math.round((sells.length / completedTrades.length) * 100 * 10) / 10
-    : 67.4;
+    : 0;
+
+  const withdrawals = transactions.filter((t) => t.type === "withdrawal");
+  const totalWithdrawn = withdrawals.reduce((sum, t) => sum + (t.amount || 0), 0);
+  const pendingWithdrawals = withdrawals.filter((t) => t.status === "pending").length;
 
   const pnl24h = portfolioTotal * (portfolioChange24h / 100);
 
@@ -48,11 +50,11 @@ export default function PortfolioStats({ portfolioTotal, portfolioChange24h, isL
       icon: BarChart3,
     },
     {
-      label: "Win Rate",
-      value: `${winRate}%`,
-      change: completedTrades.length > 0 ? `${completedTrades.length} closed` : "No closed trades",
-      isPositive: winRate >= 50,
-      icon: Activity,
+      label: "Withdrawals",
+      value: `$${totalWithdrawn.toLocaleString(undefined, { maximumFractionDigits: 2 })}`,
+      change: pendingWithdrawals > 0 ? `${pendingWithdrawals} pending` : `${withdrawals.length} total`,
+      isPositive: pendingWithdrawals === 0,
+      icon: ArrowUpRight,
     },
   ];
 
