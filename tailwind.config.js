@@ -80,5 +80,12 @@ module.exports = {
   		}
   	}
   },
+  safelist: [
+    "text-chart-3",
+    "bg-chart-3/5",
+    "bg-chart-3/20",
+    "border-chart-3/40",
+    "text-chart-3/80",
+  ],
   plugins: [require("tailwindcss-animate")],
 }
