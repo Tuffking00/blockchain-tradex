@@ -45,7 +45,10 @@ export default function Transactions() {
 
   const { data: transactions = [], isLoading } = useQuery({
     queryKey: ["transactions"],
-    queryFn: () => base44.entities.Transaction.list("-transaction_date", 50),
+    queryFn: async () => {
+      const user = await base44.auth.me();
+      return base44.entities.Transaction.filter({ created_by: user.email }, "-transaction_date", 50);
+    },
     initialData: [],
   });
 

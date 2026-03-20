@@ -10,7 +10,10 @@ export default function Alerts() {
 
   const { data: alerts = [], refetch: refetchAlerts } = useQuery({
     queryKey: ["alerts"],
-    queryFn: () => base44.entities.Alert.list(),
+    queryFn: async () => {
+      const user = await base44.auth.me();
+      return base44.entities.Alert.filter({ created_by: user.email });
+    },
     initialData: [],
   });
 
