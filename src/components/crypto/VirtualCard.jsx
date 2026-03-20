@@ -1,8 +1,29 @@
 import React, { useState } from "react";
-import { motion } from "framer-motion";
-import { Eye, EyeOff, Copy, Lock, DollarSign, Clock, AlertCircle, Shield } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Eye, EyeOff, Copy, Lock, DollarSign, Send, Wallet, CheckCircle2, Loader2, ShieldCheck, Server, Database, RefreshCcw, UserCheck, CircleDollarSign, BadgeCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
+import { base44 } from "@/api/base44Client";
 import { toast } from "sonner";
+
+const BROKER_STEPS = [
+  { icon: UserCheck,        label: "Verifying account identity...",       delay: 0 },
+  { icon: ShieldCheck,      label: "Running 2FA security check...",       delay: 1400 },
+  { icon: Database,         label: "Fetching wallet balance...",          delay: 2600 },
+  { icon: Server,           label: "Connecting to payment gateway...",    delay: 3800 },
+  { icon: RefreshCcw,       label: "Processing withdrawal request...",    delay: 5000 },
+  { icon: CircleDollarSign, label: "Confirming fund allocation...",       delay: 6400 },
+  { icon: BadgeCheck,       label: "Withdrawal submitted successfully!",  delay: 7600 },
+];
+
+const METHOD_LABELS = {
+  bank_transfer: "Bank Transfer",
+  crypto_wallet: "Crypto Wallet",
+  paypal: "PayPal",
+  wire_transfer: "Wire Transfer",
+};
 
 export default function VirtualCard({ card }) {
   const [showNumbers, setShowNumbers] = useState(false);
