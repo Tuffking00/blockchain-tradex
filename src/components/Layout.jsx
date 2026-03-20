@@ -21,6 +21,8 @@ export default function Layout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [withdrawOpen, setWithdrawOpen] = useState(false);
   const { portfolioTotal, isLoading, lastUpdated, refetch } = useLivePrices();
+  const { user } = useAuth();
+  const userRole = user?.role || "trader";
 
   return (
     <div className="min-h-screen bg-background flex">
