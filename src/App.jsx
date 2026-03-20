@@ -41,10 +41,15 @@ const AuthenticatedApp = () => {
   // Render the main app
   return (
     <Routes>
-      <Route path="/" element={<Dashboard />} />
-      <Route path="/transactions" element={<Transactions />} />
-      <Route path="/analytics" element={<Analytics />} />
-      {/* Add your page Route elements here */}
+      <Route element={<Layout />}>
+        <Route path="/" element={<Dashboard />} />
+        <Route path="/trade" element={<Trade />} />
+        <Route path="/markets" element={<Markets />} />
+        <Route path="/alerts" element={<Alerts />} />
+        <Route path="/card" element={<Card />} />
+        <Route path="/transactions" element={<Transactions />} />
+        <Route path="/analytics" element={<Analytics />} />
+      </Route>
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );
