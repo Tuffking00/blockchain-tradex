@@ -132,8 +132,8 @@ export default function VirtualCard({ card }) {
             <p className="text-xs font-medium opacity-75 uppercase tracking-wider">Blockchain Tradex</p>
             <p className="text-lg font-bold mt-1">Virtual Card</p>
           </div>
-          <div className="flex items-center justify-center w-12 h-12 bg-gradient-to-br from-cyan-400/30 to-blue-400/30 rounded-lg backdrop-blur-sm border border-cyan-400/20">
-          <Lock className="w-6 h-6 text-cyan-300" />
+          <div className="flex items-center justify-center w-12 h-12 bg-gradient-to-br from-primary/30 to-chart-4/30 rounded-lg backdrop-blur-sm border border-primary/20">
+          <Lock className="w-6 h-6 text-primary" />
           </div>
         </div>
 
@@ -149,7 +149,7 @@ export default function VirtualCard({ card }) {
                 size="icon"
                 variant="ghost"
                 onClick={() => setShowNumbers(!showNumbers)}
-                className="h-8 w-8 hover:bg-cyan-400/20 text-cyan-300"
+                className="h-8 w-8 hover:bg-primary/20 text-primary"
               >
                 {showNumbers ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
               </Button>
@@ -157,7 +157,7 @@ export default function VirtualCard({ card }) {
                 size="icon"
                 variant="ghost"
                 onClick={copyToClipboard}
-                className="h-8 w-8 hover:bg-cyan-400/20 text-cyan-300"
+                className="h-8 w-8 hover:bg-primary/20 text-primary"
                 title="Copy card number"
               >
                 <Copy className="w-4 h-4" />
@@ -232,33 +232,33 @@ export default function VirtualCard({ card }) {
 
         {card.card_type === "premium" && (
           <div className="mt-4 pt-4 border-t border-border/30 space-y-2">
-            <p className="text-xs font-semibold text-cyan-400 uppercase tracking-wider">Premium Advantages</p>
+            <p className="text-xs font-semibold text-chart-4 uppercase tracking-wider">Premium Advantages</p>
             <ul className="space-y-1 text-xs text-muted-foreground">
               <li className="flex items-start gap-2">
-                <span className="text-cyan-400 mt-0.5">✓</span>
+                <span className="text-primary mt-0.5">✓</span>
                 <span>45K Welcome Bonus Profit</span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-cyan-400 mt-0.5">✓</span>
+                <span className="text-primary mt-0.5">✓</span>
                 <span>Up to 5M Daily Trading Limit</span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-cyan-400 mt-0.5">✓</span>
+                <span className="text-primary mt-0.5">✓</span>
                 <span>Advanced Market Access</span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-cyan-400 mt-0.5">✓</span>
+                <span className="text-primary mt-0.5">✓</span>
                 <span>Priority Trade Execution</span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-cyan-400 mt-0.5">✓</span>
+                <span className="text-primary mt-0.5">✓</span>
                 <span>Reduced Trading Fees</span>
               </li>
             </ul>
 
             <Button
               onClick={handleTapProfit}
-              className="w-full mt-4 bg-gradient-to-r from-primary to-cyan-500 hover:from-primary/90 hover:to-cyan-600 text-primary-foreground font-semibold"
+              className="w-full mt-4 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold"
             >
               <DollarSign className="w-4 h-4 mr-2" />
               Tap Profit (45K)
@@ -332,7 +332,7 @@ export default function VirtualCard({ card }) {
               <motion.div key="processing" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="py-4 space-y-3">
                 <div className="bg-secondary/40 rounded-t-lg px-4 py-2 flex items-center gap-2 border border-border/50 border-b-0">
                   <span className="w-2.5 h-2.5 rounded-full bg-destructive/70" />
-                  <span className="w-2.5 h-2.5 rounded-full bg-yellow-400/70" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-chart-3/70" />
                   <span className="w-2.5 h-2.5 rounded-full bg-primary/70" />
                   <span className="ml-2 text-xs text-muted-foreground font-mono">broker-terminal — withdrawal</span>
                 </div>

@@ -12,11 +12,11 @@ import { Loader2, TrendingUp, ArrowUpRight, Wallet } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const COLORS = {
-  bank_transfer: "#22c55e",
-  crypto_wallet: "#06b6d4",
-  paypal: "#a78bfa",
-  wire_transfer: "#f59e0b",
-  other: "#6b7280",
+  bank_transfer: "hsl(var(--primary))",
+  crypto_wallet: "hsl(var(--chart-4))",
+  paypal: "hsl(var(--chart-5))",
+  wire_transfer: "hsl(var(--chart-3))",
+  other: "hsl(var(--muted-foreground))",
 };
 
 const METHOD_LABELS = {
@@ -143,8 +143,8 @@ export default function Analytics() {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {[
             { label: "Total Withdrawals", value: `$${totalWithdrawals.toLocaleString()}`, icon: ArrowUpRight, color: "text-primary" },
-            { label: "Total Trading Volume", value: `$${totalTrading.toLocaleString()}`, icon: TrendingUp, color: "text-cyan-400" },
-            { label: "Total Transactions", value: totalTxCount, icon: Wallet, color: "text-violet-400" },
+            { label: "Total Trading Volume", value: `$${totalTrading.toLocaleString()}`, icon: TrendingUp, color: "text-chart-4" },
+            { label: "Total Transactions", value: totalTxCount, icon: Wallet, color: "text-chart-5" },
           ].map((stat, i) => (
             <motion.div
               key={stat.label}
