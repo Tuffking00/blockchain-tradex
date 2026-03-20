@@ -2,6 +2,7 @@ import React from "react";
 import PortfolioStats from "@/components/crypto/PortfolioStats";
 import PriceChart from "@/components/crypto/PriceChart";
 import RecentTrades from "@/components/crypto/RecentTrades";
+import ActivityNotifications from "@/components/dashboard/ActivityNotifications";
 import { useLivePrices } from "@/hooks/useLivePrices";
 
 export default function Dashboard() {
