@@ -28,6 +28,11 @@ export default function Dashboard() {
     return acc;
   }, {});
 
+  const cryptoChanges = cryptoList.reduce((acc, coin) => {
+    acc[coin.symbol] = coin.change24h;
+    return acc;
+  }, {});
+
   return (
     <div className="min-h-screen bg-background">
       <TopBar
@@ -65,9 +70,9 @@ export default function Dashboard() {
           </div>
         </div>
 
-        <AlertManager alerts={alerts} onAlertsUpdate={refetchAlerts} />
+        <AlertManager alerts={alerts} onAlertsUpdate={refetchAlerts} cryptoPrices={cryptoPrices} cryptoChanges={cryptoChanges} />
 
-        <NotificationCenter alerts={alerts} cryptoPrices={cryptoPrices} />
+        <NotificationCenter alerts={alerts} cryptoPrices={cryptoPrices} cryptoChanges={cryptoChanges} />
       </div>
     </div>
   );
