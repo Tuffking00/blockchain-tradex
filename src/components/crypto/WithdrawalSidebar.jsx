@@ -37,7 +37,7 @@ export default function WithdrawalSidebar({ open, onClose }) {
   const fee = amount ? (parseFloat(amount) * 0.02).toFixed(2) : "0.00";
   const netAmount = amount ? (parseFloat(amount) - parseFloat(fee)).toFixed(2) : "0.00";
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!method || !amount || parseFloat(amount) <= 0) {
       toast.error("Please fill in all required fields");
       return;
@@ -46,26 +46,32 @@ export default function WithdrawalSidebar({ open, onClose }) {
     setProcessingDone(false);
     setProcessingSteps([]);
 
-    BROKER_STEPS.forEach((step, i) => {
-      setTimeout(() => {
-        setProcessingSteps((prev) => [...prev, i]);
-        if (i === BROKER_STEPS.length - 1) {
-          base44.entities.Transaction.create({
-            type: "withdrawal",
-            amount: parseFloat(amount),
-            total_value: parseFloat(amount),
-            status: "pending",
-            transaction_date: new Date().toISOString(),
-            notes: `Withdrawal via ${METHOD_LABELS[method] || method}${walletAddress ? ` — ${walletAddress}` : ""}`,
-          }).then(() => {
-            queryClient.invalidateQueries({ queryKey: ["transactions"] });
-            queryClient.invalidateQueries({ queryKey: ["transactions-stats"] });
-          });
-          setIsProcessing(false);
-          setProcessingDone(true);
-        }
-      }, step.delay);
-    });
+    try {
+      const user = await base44.auth.me();
+      
+      BROKER_STEPS.forEach((step, i) => {
+        setTimeout(() => {
+          setProcessingSteps((prev) => [...prev, i]);
+          if (i === BROKER_STEPS.length - 1) {
+            base44.entities.WithdrawalRequest.create({
+              amount: parseFloat(amount),
+              withdrawal_method: method,
+              destination: walletAddress || "Not specified",
+              requested_by: user.email,
+              status: "pending",
+              created_at: new Date().toISOString(),
+            }).then(() => {
+              queryClient.invalidateQueries({ queryKey: ["withdrawal-requests"] });
+            });
+            setIsProcessing(false);
+            setProcessingDone(true);
+          }
+        }, step.delay);
+      });
+    } catch (error) {
+      toast.error("Failed to submit withdrawal request");
+      setIsProcessing(false);
+    }
   };
 
   const handleClose = () => {
