@@ -32,6 +32,8 @@ const METHOD_LABELS = {
 };
 
 export default function Transactions() {
+  const [editingId, setEditingId] = useState(null);
+  const [editAmount, setEditAmount] = useState("");
   const [withdrawalDialog, setWithdrawalDialog] = useState(false);
   const [withdrawalMethod, setWithdrawalMethod] = useState("");
   const [withdrawalAmount, setWithdrawalAmount] = useState("");
